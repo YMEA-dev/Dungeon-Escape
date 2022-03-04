@@ -44,7 +44,8 @@ public class CombatAnimationStateController : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        GetAnimClipTime();    }
+        GetAnimClipTime();
+    }
 
     // Update is called once per frame
     void Update()
