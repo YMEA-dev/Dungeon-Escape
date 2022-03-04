@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,10 +14,10 @@ public class CombatAnimationStateController : MonoBehaviour
 
     private const float COOLDOWNCONSTANT = 0.5f;
     private float coolDown;
-    private float jumpTime, plungingTime, castTime;
-    private float jumpDuration, plungingDuration, castDuration;
+    private float plungingTime, castTime;
+    private float plungingDuration, castDuration;
 
-    private bool slashed = false;
+    private bool slashed = false, plunged = false, casted = false;
 
     #region GetAnimationsLength
     
@@ -27,9 +28,6 @@ public class CombatAnimationStateController : MonoBehaviour
             {
                 switch (clip.name)
                 {
-                    case "Jump" :
-                        jumpTime = clip.length;
-                        break;
                     case "Attack3" :
                         plungingTime = clip.length;
                         break;
@@ -46,16 +44,16 @@ public class CombatAnimationStateController : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        GetAnimClipTime();
-    }
+        GetAnimClipTime();    }
 
     // Update is called once per frame
     void Update()
     {
+        //Problem with attackPress when using GetKeyDown
         bool attackPress = Input.GetKey(KeyCode.Mouse0);
         bool blockPress = Input.GetKey(KeyCode.Mouse1);
-        bool plungingPress = Input.GetKey(KeyCode.Q);
-        bool castPress = Input.GetKey(KeyCode.E);
+        bool plungingPress = Input.GetKeyDown(KeyCode.Q);
+        bool castPress = Input.GetKeyDown(KeyCode.E);
         
         SetAnimations(attackPress, blockPress, plungingPress, castPress);
 
@@ -76,13 +74,20 @@ public class CombatAnimationStateController : MonoBehaviour
             animator.SetBool("IsBlocking", true);
         else 
             animator.SetBool("IsBlocking", false);
+        
         if (plungingPress)
         {
-            coolDown = Time.time + COOLDOWNCONSTANT;
+            plungingDuration = Time.time + plungingTime;
             animator.SetBool("IsPlunging", true);
+            plunged = true;
         }
+
         if (castPress)
+        {
+            castDuration = Time.time + castTime;
             animator.SetBool("IsCasting", true);
+            casted = true;
+        }
     }
 
     void ResetAnimations()
@@ -94,7 +99,17 @@ public class CombatAnimationStateController : MonoBehaviour
             animator.SetBool("IsSlashing", false);
             slashed = false;
         }
-        
-        /*if ()*/
+
+        if (casted && castDuration < Time.time)
+        {
+            animator.SetBool("IsCasting", false);
+            casted = false;
+        }
+
+        if (plunged && plungingDuration < Time.time)
+        {
+            animator.SetBool("IsPlunging", false);
+            plunged = false;
+        }
     }
 }
