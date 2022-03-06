@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
-using UnityEngine.Networking;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
     PhotonView view;
     public CharacterController controller;
-    public GameObject playerCamera;
     public Transform cam;
     public Transform groundCheck;
     public float groundDistance = 0.4f;
@@ -31,14 +29,6 @@ public class ThirdPersonMovement : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         view = GetComponent<PhotonView>();
-        if (view.IsMine == true)
-        {
-            playerCamera.SetActive(true);
-        }
-        else
-        {
-            playerCamera.SetActive(false);
-        }
     }
     
     void Update()
