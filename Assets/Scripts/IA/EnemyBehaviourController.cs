@@ -9,7 +9,7 @@ public class EnemyBehaviourController : MonoBehaviour
 {
     public NavMeshAgent agent;
 
-    public Transform player;
+    public GameObject[] players;
 
     public LayerMask Ground, Player;
     
@@ -20,7 +20,7 @@ public class EnemyBehaviourController : MonoBehaviour
     
     //Attacking
     public float timeBetweenAttacks;
-    private bool alreadyAttacked;
+    //private bool alreadyAttacked;
     //public GameObject projectile;
     
     //States 
@@ -30,7 +30,7 @@ public class EnemyBehaviourController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        player = GameObject.FindWithTag("Player").transform;
+        players = GameObject.FindGameObjectsWithTag("Player");
         agent = GetComponent<NavMeshAgent>();
     }
 
@@ -51,10 +51,14 @@ public class EnemyBehaviourController : MonoBehaviour
             ChasePlayer();
         if (playerInAttackRange && playerInSightRange)
             AttackPlayer();
+        
+        Debug.Log("Bot Speed : " + agent.speed);
     }
 
     private void Patrolling()
     {
+        agent.speed = (float)EnemyParameters.MonsterState.Patrolling;
+        
         if (!walkPointSet)
             SearchWalkPoint();
         if (walkPointSet)
@@ -88,13 +92,20 @@ public class EnemyBehaviourController : MonoBehaviour
 
     private void ChasePlayer()
     {
-        agent.SetDestination(player.position);
+        agent.speed = (float)EnemyParameters.MonsterState.Chasing;
+
+        foreach (GameObject player in players)
+        {
+            if(Vector3.Distance(player.transform.position, transform.position) <= sightRange)
+                agent.SetDestination(player.transform.position);
+        }
+        
     }
 
     private void AttackPlayer()
     {
         agent.SetDestination(transform.position);
-        transform.LookAt(player);
+        //transform.LookAt(player);
 
         /*if (!alreadyAttacked)
         {
@@ -109,7 +120,7 @@ public class EnemyBehaviourController : MonoBehaviour
 
     private void ResetAttack()
     {
-        alreadyAttacked = false;
+        //alreadyAttacked = false;
     }
     
     private void OnDrawGizmosSelected()
