@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 using TMPro;
 
 public class Launcher : MonoBehaviourPunCallbacks
@@ -13,6 +14,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_InputField joinRoomNameInputField;
     [SerializeField] private TMP_Text errorText;
     [SerializeField] private TMP_Text roomNameText;
+    [SerializeField] private GameObject startGameButton;
 
     /*private void Awake()
     {
@@ -30,6 +32,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         Debug.Log("Connected to server.");
         PhotonNetwork.JoinLobby();
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     public override void OnJoinedLobby()
@@ -63,6 +66,13 @@ public class Launcher : MonoBehaviourPunCallbacks
         MenuManager.Instance.OpenMenu("room");
         Debug.Log("PhotonNetwork.CurrentRoom.Name");
         roomNameText.text = PhotonNetwork.CurrentRoom.Name;
+        
+        startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+    }
+
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        startGameButton.SetActive(PhotonNetwork.IsMasterClient);
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
@@ -80,5 +90,10 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         MenuManager.Instance.OpenMenu("lobby");
+    }
+
+    public void StartGame()
+    {
+        PhotonNetwork.LoadLevel(1);
     }
 }
