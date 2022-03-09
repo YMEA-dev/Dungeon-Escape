@@ -7,9 +7,17 @@ using TMPro;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private TMP_InputField roomNameInputField;
+    //public static Launcher Instance;
+    
+    [SerializeField] private TMP_InputField createRoomNameInputField;
+    [SerializeField] private TMP_InputField joinRoomNameInputField;
     [SerializeField] private TMP_Text errorText;
     [SerializeField] private TMP_Text roomNameText;
+
+    /*private void Awake()
+    {
+        Instance = this;
+    }*/
 
     void Start()
     {
@@ -32,21 +40,34 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void CreateRoom()
     {
-        if (string.IsNullOrEmpty(roomNameInputField.text))
+        if (string.IsNullOrEmpty(createRoomNameInputField.text))
             return;
-        PhotonNetwork.CreateRoom(roomNameInputField.text);
+        PhotonNetwork.CreateRoom(createRoomNameInputField.text);
         MenuManager.Instance.OpenMenu("loading");
+    }
+    
+    public void JoinRoom()
+    {
+        PhotonNetwork.JoinRoom(joinRoomNameInputField.text);
+        MenuManager.Instance.OpenMenu("loading");
+    }
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        errorText.text = "Room Creation Failed : " + message;
+        MenuManager.Instance.OpenMenu("error");
     }
 
     public override void OnJoinedRoom()
     {
         MenuManager.Instance.OpenMenu("room");
+        Debug.Log("PhotonNetwork.CurrentRoom.Name");
         roomNameText.text = PhotonNetwork.CurrentRoom.Name;
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        errorText.text = "Room Creation Failed " + message;
+        errorText.text = "Room Creation Failed : " + message;
         MenuManager.Instance.OpenMenu("error");
     }
 
