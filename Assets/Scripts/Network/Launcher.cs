@@ -5,10 +5,11 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
-    //public static Launcher Instance;
+    public static Launcher Instance;
     
     [SerializeField] private TMP_InputField createRoomNameInputField;
     [SerializeField] private TMP_InputField joinRoomNameInputField;
@@ -16,10 +17,10 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_Text roomNameText;
     [SerializeField] private GameObject startGameButton;
 
-    /*private void Awake()
+    private void Awake()
     {
         Instance = this;
-    }*/
+    }
 
     void Start()
     {
@@ -95,5 +96,21 @@ public class Launcher : MonoBehaviourPunCallbacks
     public void StartGame()
     {
         PhotonNetwork.LoadLevel(1);
+    }
+
+    public void QuitGame()
+    {
+        PhotonNetwork.Disconnect();
+        PhotonNetwork.LoadLevel(0);
+        //PhotonNetwork.LoadLevel(0);
+        //MenuManager.Instance.OpenMenu("loading");
+    }
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        //Debug.Log("WE4RE DISCONNECTED");
+        /*MenuManager.Instance.OpenMenu("loading");
+        MenuManager.Instance.OpenMenu("lobby");*/
+        Start();
     }
 }

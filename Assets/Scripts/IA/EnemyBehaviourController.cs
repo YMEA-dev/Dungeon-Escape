@@ -30,7 +30,7 @@ public class EnemyBehaviourController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        players = GameObject.FindGameObjectsWithTag("Player");
+        players = GameObject.FindGameObjectsWithTag("Player");                  //FONCTIONNE PAS POUR LE MULTI
         agent = GetComponent<NavMeshAgent>();
     }
 
