@@ -17,9 +17,13 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_Text roomNameText;
     [SerializeField] private GameObject startGameButton;
 
+    private List<GameObject> playersObject;
+    public List<GameObject> PlayersObject => playersObject;
+    
     private void Awake()
     {
         Instance = this;
+        playersObject = new List<GameObject>();
     }
 
     void Start()
@@ -102,15 +106,10 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.Disconnect();
         PhotonNetwork.LoadLevel(0);
-        //PhotonNetwork.LoadLevel(0);
-        //MenuManager.Instance.OpenMenu("loading");
     }
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        //Debug.Log("WE4RE DISCONNECTED");
-        /*MenuManager.Instance.OpenMenu("loading");
-        MenuManager.Instance.OpenMenu("lobby");*/
         Start();
     }
 }

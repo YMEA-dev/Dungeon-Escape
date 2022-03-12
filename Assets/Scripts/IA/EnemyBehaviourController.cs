@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
+using Photon.Realtime;
 
 public class EnemyBehaviourController : MonoBehaviour
 {
@@ -88,12 +90,11 @@ public class EnemyBehaviourController : MonoBehaviour
     {
         agent.speed = (float)EnemyParameters.MonsterState.Chasing;
 
-        foreach (GameObject player in players)
+        foreach (GameObject playerObject in Launcher.Instance.PlayersObject)
         {
-            if(Vector3.Distance(player.transform.position, transform.position) <= sightRange)
-                agent.SetDestination(player.transform.position);
+            if(Vector3.Distance(playerObject.transform.position, transform.position) <= sightRange)
+                agent.SetDestination(playerObject.transform.position);
         }
-        
     }
 
     private void AttackPlayer()
