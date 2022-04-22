@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
+using Photon.Pun;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
@@ -20,15 +23,29 @@ public class ThirdPersonMovement : MonoBehaviour
     public bool IsGround => isGrounded;
 
     private Vector3 velocity;
-    
+
+    private PhotonView PV;
+
+    private void Awake()
+    {
+        PV = GetComponent<PhotonView>();
+    }
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        if (!PV.IsMine)
+        {
+            Destroy(GetComponentInChildren<CinemachineFreeLook>().gameObject);
+            Destroy(GetComponentInChildren<Camera>().gameObject);
+        }
     }
     
     void Update()
     {
+        if (!PV.IsMine)
+            return;
+
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         if (isGrounded && velocity.y < 0)
             velocity.y = -2f;

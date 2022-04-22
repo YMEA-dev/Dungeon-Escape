@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
+using Photon.Realtime;
 
 public class EnemyBehaviourController : MonoBehaviour
 {
@@ -30,7 +32,7 @@ public class EnemyBehaviourController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        players = GameObject.FindGameObjectsWithTag("Player");
+        players = GameObject.FindGameObjectsWithTag("Player");                  //FONCTIONNE PAS POUR LE MULTI
         agent = GetComponent<NavMeshAgent>();
     }
 
@@ -51,8 +53,6 @@ public class EnemyBehaviourController : MonoBehaviour
             ChasePlayer();
         if (playerInAttackRange && playerInSightRange)
             AttackPlayer();
-        
-        Debug.Log("Bot Speed : " + agent.speed);
     }
 
     private void Patrolling()
@@ -65,9 +65,6 @@ public class EnemyBehaviourController : MonoBehaviour
             agent.SetDestination(walkPoint);
         
         Vector3 distanceToWalkPoint = transform.position - walkPoint;
-        Debug.Log("Position : " + transform.position);
-        Debug.Log("previousPositio  : " + previousPosition);
-        Debug.Log(distanceToWalkPoint + "          " + distanceToWalkPoint.magnitude);
 
         //if (distanceToWalkPoint.magnitude < 1.5f)
         if (previousPosition == transform.position)
@@ -82,8 +79,7 @@ public class EnemyBehaviourController : MonoBehaviour
     {
         float randomZ = Random.Range(-walkPointRange, walkPointRange);
         float randomX = Random.Range(-walkPointRange, walkPointRange);
-        Debug.Log(randomX + "        " + randomZ);
-        
+
         walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
 
         if (Physics.Raycast(walkPoint, -transform.up, 2f, Ground))
@@ -94,12 +90,11 @@ public class EnemyBehaviourController : MonoBehaviour
     {
         agent.speed = (float)EnemyParameters.MonsterState.Chasing;
 
-        foreach (GameObject player in players)
+        foreach (GameObject playerObject in Launcher.Instance.PlayersObject)
         {
-            if(Vector3.Distance(player.transform.position, transform.position) <= sightRange)
-                agent.SetDestination(player.transform.position);
+            if(Vector3.Distance(playerObject.transform.position, transform.position) <= sightRange)
+                agent.SetDestination(playerObject.transform.position);
         }
-        
     }
 
     private void AttackPlayer()
