@@ -17,7 +17,8 @@ public class CombatAnimationStateController : MonoBehaviour
     private float plungingTime, castTime;
     private float plungingDuration, castDuration;
 
-    private bool slashed = false, plunged = false, casted = false;
+    [HideInInspector]
+    public bool slashed = false, plunged = false, casted = false;
 
     #region GetAnimationsLength
     
