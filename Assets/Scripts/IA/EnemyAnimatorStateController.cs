@@ -18,18 +18,23 @@ public class EnemyAnimatorStateController : MonoBehaviour
 
     void Update()
     {
-        if (EnemyBehaviourController.Instance.playerInSightRange)
+        bool inSightRange = EnemyBehaviourController.Instance.playerInSightRange;
+        bool inAttackRange = EnemyBehaviourController.Instance.playerInAttackRange;
+
+        if (inSightRange && !inAttackRange)
         {
-            animator.SetBool(IsWalkingHash, false);
+            animator.SetBool(IsWalkingHash, true);
             animator.SetBool(IsChasingHash, true);
         }
-        else if (EnemyBehaviourController.Instance.playerInAttackRange)
+        else if (inSightRange && inAttackRange)
         {
+            animator.SetBool(IsWalkingHash, false);
             animator.SetBool(IsChasingHash, false);
         }
         else
         {
             animator.SetBool(IsWalkingHash, true);
+            animator.SetBool(IsChasingHash, false);
         }
     }
 }
