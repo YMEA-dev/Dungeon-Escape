@@ -9,6 +9,8 @@ using Photon.Realtime;
 
 public class EnemyBehaviourController : MonoBehaviour
 {
+    public static EnemyBehaviourController Instance;
+    
     public NavMeshAgent agent;
 
     public GameObject[] players;
@@ -34,6 +36,7 @@ public class EnemyBehaviourController : MonoBehaviour
     {
         players = GameObject.FindGameObjectsWithTag("Player");                  //FONCTIONNE PAS POUR LE MULTI
         agent = GetComponent<NavMeshAgent>();
+        Instance = this;
     }
 
     private void Start()
