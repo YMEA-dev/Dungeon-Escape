@@ -7,6 +7,8 @@ using Debug = UnityEngine.Debug;
 
 public class CombatAnimationStateController : MonoBehaviour
 {
+    public static CombatAnimationStateController Instance;
+    
     private Animator animator;
     //private AnimationClip clip;
 
@@ -14,10 +16,13 @@ public class CombatAnimationStateController : MonoBehaviour
 
     private const float COOLDOWNCONSTANT = 0.5f;
     private float coolDown;
-    private float plungingTime, castTime;
-    private float plungingDuration, castDuration;
+    private float plungingTime, castTime, stunTime;
+    private float plungingDuration, castDuration, stunDuration;
 
-    private bool slashed = false, plunged = false, casted = false;
+    public bool stunActivated;
+
+    [HideInInspector]
+    public bool slashed, plunged, casted, stunned;
 
     #region GetAnimationsLength
     
@@ -34,11 +39,19 @@ public class CombatAnimationStateController : MonoBehaviour
                     case "Cast" :
                         castTime = clip.length;
                         break;
+                    case "Impact3" :
+                        stunTime = clip.length;
+                        break;
                 }
             }
         }
         
     #endregion
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -57,7 +70,7 @@ public class CombatAnimationStateController : MonoBehaviour
         bool castPress = Input.GetKeyDown(KeyCode.E);
         
         SetAnimations(attackPress, blockPress, plungingPress, castPress);
-
+        
         ResetAnimations();
     }
 
@@ -89,6 +102,15 @@ public class CombatAnimationStateController : MonoBehaviour
             animator.SetBool("IsCasting", true);
             casted = true;
         }
+
+        if (stunActivated)
+        {
+            ResetAnimations();
+            stunActivated = false;
+            stunned = true;
+            stunDuration = Time.time + stunTime;
+            animator.SetBool("HitWall", true);
+        }
     }
 
     void ResetAnimations()
@@ -111,6 +133,12 @@ public class CombatAnimationStateController : MonoBehaviour
         {
             animator.SetBool("IsPlunging", false);
             plunged = false;
+        }
+
+        if (stunned && stunDuration < Time.time)
+        {
+            animator.SetBool("HitWall", false);
+            stunned = false;
         }
     }
 }
