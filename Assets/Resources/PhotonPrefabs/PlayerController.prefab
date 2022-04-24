@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 375591656503655782}
-  m_LocalRotation: {x: 0.21324305, y: -0.7563312, z: 0.29743913, w: 0.5422366}
+  m_LocalRotation: {x: 0.21324302, y: -0.7563311, z: 0.29743913, w: 0.5422366}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -98,7 +98,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 391907762543951160}
-  m_LocalRotation: {x: 0.22360538, y: -0.7504863, z: 0.3118928, w: 0.5380463}
+  m_LocalRotation: {x: 0.22360535, y: -0.7504864, z: 0.3118928, w: 0.5380463}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -298,7 +298,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3008896404124053752}
-  m_LocalRotation: {x: 0.20283312, y: -0.7618817, z: 0.28291887, w: 0.546216}
+  m_LocalRotation: {x: 0.2028331, y: -0.7618817, z: 0.28291893, w: 0.546216}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -367,6 +367,7 @@ GameObject:
   - component: {fileID: 7296924273901100028}
   - component: {fileID: 505308074659677760}
   - component: {fileID: 3166717989983163472}
+  - component: {fileID: -5086168298940524527}
   m_Layer: 6
   m_Name: PlayerController
   m_TagString: Player
@@ -476,9 +477,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33cb18d608443b64c80b207349bc2fcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stunActivated: 0
   slashed: 0
   plunged: 0
   casted: 0
+  stunned: 0
 --- !u!114 &4037630269119547021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -574,6 +577,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 2
     Name: IsCasting
+  - Type: 4
+    SynchronizeType: 2
+    Name: HitWall
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -590,6 +596,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pivotWeaponRight: {fileID: 4575543185117416980}
+--- !u!111 &-5086168298940524527
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4309611806163140224}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: e8af9d6cb08614547ac7754561d90e86, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: e8af9d6cb08614547ac7754561d90e86, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &4945330074505754002
 GameObject:
   m_ObjectHideFlags: 0
@@ -1464,11 +1486,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6475656633838984465, guid: 9ef612762b5e89547b331f02858584f8, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5387379
+      value: 0.53873783
       objectReference: {fileID: 0}
     - target: {fileID: 6475656633838984465, guid: 9ef612762b5e89547b331f02858584f8, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.2219341
+      value: 0.22193411
       objectReference: {fileID: 0}
     - target: {fileID: 6475656633838984465, guid: 9ef612762b5e89547b331f02858584f8, type: 3}
       propertyPath: m_LocalRotation.y
@@ -1476,7 +1498,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6475656633838984465, guid: 9ef612762b5e89547b331f02858584f8, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.3095617
+      value: 0.30956173
       objectReference: {fileID: 0}
     - target: {fileID: 6475656633838984465, guid: 9ef612762b5e89547b331f02858584f8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
