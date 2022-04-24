@@ -14,7 +14,10 @@ public class OnWeaponCollision : MonoBehaviour
         if (colliderLayer == "Ground")
             Debug.Log("Sword hit a wall");
         else if (colliderLayer == "Enemy")
-            Debug.Log("Sword hit an enemy");
+        {
+            EnemyAnimatorStateController.Instance.isHit = true;
+            Debug.Log("Sword hit an enemy");   
+        }
         else if (colliderLayer == "Wall")
         {
             CombatAnimationStateController.Instance.stunActivated = true;
