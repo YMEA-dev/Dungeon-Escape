@@ -8,6 +8,8 @@ public class BehaviourAnimationStateController : MonoBehaviour
 
     private bool jumped = false;
     private float jumpingTime, jumpingDuration;
+    private float prevAnimationSpeed;
+    private float timeMidAir;
         
     #region GetAnimationsLength
     
@@ -51,5 +53,23 @@ public class BehaviourAnimationStateController : MonoBehaviour
             animator.SetBool("IsJumping", false);
             jumped = false;
         }
+
+        if (animator.speed == 0 && ThirdPersonMovement.Instance.isGrounded)
+        {
+            animator.speed = prevAnimationSpeed;
+            timeMidAir = 0f;
+        }
+        else if (animator.speed == 0)
+        {
+            timeMidAir += Time.deltaTime;
+            ThirdPersonMovement.Instance.controller.Move(ThirdPersonMovement.Instance.controller.transform.forward
+                * Time.deltaTime * ThirdPersonMovement.Instance.myStats.Speed / (timeMidAir + 1));
+        }
+    }
+
+    void StopJumpAnimation()
+    {
+        prevAnimationSpeed = animator.speed;
+        animator.speed = 0;
     }
 }

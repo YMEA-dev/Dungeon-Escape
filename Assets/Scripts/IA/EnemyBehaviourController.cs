@@ -103,7 +103,11 @@ public class EnemyBehaviourController : MonoBehaviour
     private void AttackPlayer()
     {
         agent.SetDestination(transform.position);
-        //transform.LookAt(player);
+        foreach (GameObject playerObject in Launcher.Instance.PlayersObject)
+        {
+            if(Vector3.Distance(playerObject.transform.position, transform.position) <= sightRange)
+                transform.LookAt(playerObject.transform.position);
+        }
 
         /*if (!alreadyAttacked)
         {
