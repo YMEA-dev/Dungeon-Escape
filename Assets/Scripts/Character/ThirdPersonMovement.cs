@@ -7,28 +7,30 @@ using Photon.Pun;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
+    public static ThirdPersonMovement Instance;
+    
     public CharacterController controller;
     public Transform cam;
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
+    public LayerMask wallMask;
     
-    public float speed = 6f;
     public float gravity = -9.81f;
     public float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity;
-    public float jumpHeight = 3f;
 
-    private bool isGrounded;
-    public bool IsGround => isGrounded;
-
+    public bool isGrounded;
+    
     private Vector3 velocity;
 
     private PhotonView PV;
+    public CharacterStats myStats;
 
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
+        Instance = this;
     }
 
     void Start()
@@ -46,19 +48,19 @@ public class ThirdPersonMovement : MonoBehaviour
         if (!PV.IsMine)
             return;
 
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-        if (isGrounded && velocity.y < 0)
-            velocity.y = -2f;
+        Jump();
+        Move();
+    }
+
+    private void Move()
+    {
+        if (!isGrounded)
+            return;
         
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
-        if (Input.GetButtonDown("Jump") && isGrounded)
-            velocity.y = Mathf.Sqrt(-2f * jumpHeight * gravity);    
-        
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
         
         if (direction.magnitude >= 0.1)
         {
@@ -68,7 +70,20 @@ public class ThirdPersonMovement : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            controller.Move(moveDir.normalized * speed * Time.deltaTime);
+            controller.Move(moveDir.normalized * myStats.Speed * Time.deltaTime);
         }
+    }
+
+    void Jump()
+    {
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask | wallMask);
+        if (isGrounded && velocity.y < 0)
+            velocity.y = -2f;
+        
+        if (Input.GetButtonDown("Jump") && isGrounded)
+            velocity.y = Mathf.Sqrt(-2f * myStats.JumpHeight * gravity);    
+        
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
     }
 }
