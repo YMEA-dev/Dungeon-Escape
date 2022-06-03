@@ -12,9 +12,7 @@ public class EnemyBehaviourController : MonoBehaviour
     public static EnemyBehaviourController Instance;
     
     public NavMeshAgent agent;
-
-    public GameObject[] players;
-
+    
     public LayerMask Ground, Player;
     
     //Patroling 
@@ -34,7 +32,6 @@ public class EnemyBehaviourController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        players = GameObject.FindGameObjectsWithTag("Player");                  //FONCTIONNE PAS POUR LE MULTI
         agent = GetComponent<NavMeshAgent>();
         Instance = this;
     }
@@ -61,20 +58,23 @@ public class EnemyBehaviourController : MonoBehaviour
     private void Patrolling()
     {
         agent.speed = (float)EnemyParameters.MonsterState.Patrolling;
-        
-        if (!walkPointSet)
-            SearchWalkPoint();
-        if (walkPointSet)
-            agent.SetDestination(walkPoint);
-        
-        Vector3 distanceToWalkPoint = transform.position - walkPoint;
 
-        //if (distanceToWalkPoint.magnitude < 1.5f)
-        if (previousPosition == transform.position)
+        if (!walkPointSet)
+        {
+            SearchWalkPoint();
+        }
+
+        if (walkPointSet)
+        {
+            transform.LookAt(walkPoint);
+            agent.SetDestination(walkPoint);
+        }
+        
+        if (previousPosition.Equals(transform.position) || !agent.hasPath)
         {
             walkPointSet = false;
         }
-
+        
         previousPosition = transform.position;
     }
 
@@ -85,7 +85,8 @@ public class EnemyBehaviourController : MonoBehaviour
 
         walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
 
-        if (Physics.Raycast(walkPoint, -transform.up, 2f, Ground))
+        if (Physics.Raycast(walkPoint, -transform.up, 2f, Ground) && 
+            !Physics.Raycast(walkPoint, transform.forward, 3f, Ground))
             walkPointSet = true;
     }
 
@@ -93,18 +94,38 @@ public class EnemyBehaviourController : MonoBehaviour
     {
         agent.speed = (float)EnemyParameters.MonsterState.Chasing;
 
-        foreach (GameObject playerObject in Launcher.Instance.PlayersObject)
+        /*foreach (KeyValuePair<int, GameObject> idAndObject in Launcher.Instance.PlayersObject)
         {
+            GameObject playerObject = idAndObject.Value;
             if(Vector3.Distance(playerObject.transform.position, transform.position) <= sightRange)
                 agent.SetDestination(playerObject.transform.position);
+        }*/
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            GameObject playerObject = (GameObject) player.TagObject;
+            if (Vector3.Distance(playerObject.transform.position, transform.position) <= sightRange)
+            {
+                transform.LookAt(playerObject.transform.position);
+                agent.SetDestination(playerObject.transform.position);
+            }
         }
     }
 
     private void AttackPlayer()
     {
         agent.SetDestination(transform.position);
-        foreach (GameObject playerObject in Launcher.Instance.PlayersObject)
+        /*foreach (KeyValuePair<int, GameObject> idAndObject in Launcher.Instance.PlayersObject)
         {
+            Debug.Log(Launcher.Instance.PlayersObject.Count);
+            Debug.Log(idAndObject.Key + "   " + idAndObject.Value);
+            GameObject playerObject = idAndObject.Value;
+            if(Vector3.Distance(playerObject.transform.position, transform.position) <= sightRange)
+                transform.LookAt(playerObject.transform.position);
+        }*/
+
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            GameObject playerObject = (GameObject) player.TagObject;
             if(Vector3.Distance(playerObject.transform.position, transform.position) <= sightRange)
                 transform.LookAt(playerObject.transform.position);
         }
