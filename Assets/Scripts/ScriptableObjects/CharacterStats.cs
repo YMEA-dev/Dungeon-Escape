@@ -6,32 +6,45 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Stats", menuName = "CharacterStats")]
 public class CharacterStats : ScriptableObject
 {
-    public float Health;
+    [HideInInspector] public float Health;
+    public float BaseHealth;
     public float Attack;
     public float Speed;
     public float JumpHeight;
     public float SprintCoeff;
     public float CrouchCoeff;
 
-    private Animator animator;
     private int IsDyingHash;
-
-    [SerializeField] private GameObject gameObject;
-
+    
     private void Awake()
     {
-        animator = gameObject.GetComponent<Animator>();
         IsDyingHash = Animator.StringToHash("IsDying");
     }
 
     public void TakeDamage(float attackDamage)
     {
         Health -= attackDamage;
+        Debug.Log("Health: " + Health);
     }
 
-    public virtual void Die()
+    public virtual void Die(GameObject gameObject)
     {
-        animator.SetBool(IsDyingHash, true);
-        Destroy(gameObject);
+        if (gameObject.CompareTag("Enemy"))
+        {
+            EnemyAnimatorStateController animationController = gameObject.GetComponent<EnemyAnimatorStateController>();
+            animationController.PlayDying();
+            
+            if (animationController.AnimationHasFinished("Death"))
+                Destroy(gameObject);
+        }
+        else if (gameObject.CompareTag("Player"))
+        {
+            BehaviourAnimationStateController animationController =
+                gameObject.GetComponent<BehaviourAnimationStateController>();
+            animationController.PlayDying();
+
+            if (animationController.AnimationHasFinished("Death")) {}
+            //Destroy(gameObject);
+        }
     }
 }

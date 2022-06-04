@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class OnWeaponCollision : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject playerObject;
+
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log("COLLISION");
@@ -11,11 +14,17 @@ public class OnWeaponCollision : MonoBehaviour
         if (colliderLayer == "Player")
             return;
         
-        if (colliderLayer == "Ground")
-            Debug.Log("Sword hit a wall");
-        else if (colliderLayer == "Enemy")
+        /*if (colliderLayer == "Ground")
+            Debug.Log("Sword hit a wall");*/
+        if (colliderLayer == "Enemy")
         {
-            EnemyAnimatorStateController.Instance.isHit = true;
+            GameObject enemyObject = collision.gameObject;
+            EnemyBehaviourController enemyController = enemyObject.GetComponent<EnemyBehaviourController>();
+            EnemyAnimatorStateController enemyAnimatorController =
+                enemyObject.GetComponent<EnemyAnimatorStateController>();
+            
+            enemyController.myStats.TakeDamage(playerObject.GetComponent<ThirdPersonMovement>().myStats.Attack);
+            enemyAnimatorController.isHit = true;
             Debug.Log("Sword hit an enemy");   
         }
         else if (colliderLayer == "Wall")

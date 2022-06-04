@@ -7,7 +7,7 @@ using Photon.Realtime;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-public class Launcher : MonoBehaviourPunCallbacks
+public class Launcher : MonoBehaviourPunCallbacks 
 {
     public static Launcher Instance;
     
@@ -17,13 +17,12 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_Text roomNameText;
     [SerializeField] private GameObject startGameButton;
 
-    private List<GameObject> playersObject;
-    public List<GameObject> PlayersObject => playersObject;
-    
+    public Dictionary<int, GameObject> PlayersObject;
+
     private void Awake()
     {
         Instance = this;
-        playersObject = new List<GameObject>();
+        PlayersObject = new Dictionary<int, GameObject>();
     }
 
     void Start()
@@ -111,5 +110,10 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnDisconnected(DisconnectCause cause)
     {
         Start();
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        PlayersObject.Remove(otherPlayer.ActorNumber);
     }
 }
