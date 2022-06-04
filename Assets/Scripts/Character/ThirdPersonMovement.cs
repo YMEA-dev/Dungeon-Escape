@@ -41,6 +41,8 @@ public class ThirdPersonMovement : MonoBehaviour
             Destroy(GetComponentInChildren<CinemachineFreeLook>().gameObject);
             Destroy(GetComponentInChildren<Camera>().gameObject);
         }
+
+        myStats.Health = myStats.BaseHealth;
     }
     
     void Update()
@@ -50,6 +52,9 @@ public class ThirdPersonMovement : MonoBehaviour
 
         Jump();
         Move();
+        
+        if (myStats.Health <= 0)
+            myStats.Die(gameObject);
     }
 
     private void Move()

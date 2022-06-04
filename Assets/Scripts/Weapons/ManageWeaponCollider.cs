@@ -12,7 +12,7 @@ public class ManageWeaponCollider : MonoBehaviour
 
     private void Start()
     {
-        swordHolder = pivotWeaponRight.GetChild(3).gameObject;
+        swordHolder = pivotWeaponRight.GetChild(0).gameObject;
         weaponCollider = swordHolder.GetComponent<BoxCollider>();
         weaponCollider.enabled = false;
     }

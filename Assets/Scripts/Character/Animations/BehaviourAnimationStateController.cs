@@ -67,9 +67,28 @@ public class BehaviourAnimationStateController : MonoBehaviour
         }
     }
 
+    public void PlayDying()
+    {
+        foreach (AnimatorControllerParameter parameter in animator.parameters)
+            if (parameter.type is AnimatorControllerParameterType.Bool)
+                animator.SetBool(parameter.name, false);
+        animator.SetBool("IsDying", true);
+    }
+
     void StopJumpAnimation()
     {
         prevAnimationSpeed = animator.speed;
         animator.speed = 0;
+    }
+    
+    public bool AnimationIsPlaying(string animationName)
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).IsName(animationName);
+    }
+
+    public bool AnimationHasFinished(string animationName)
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).IsName(animationName) && 
+               animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1.0f;
     }
 }
