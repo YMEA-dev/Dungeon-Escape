@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class TwoDimensionalAnimationStateController : MonoBehaviour
@@ -12,12 +14,17 @@ public class TwoDimensionalAnimationStateController : MonoBehaviour
 	//Refactoring code
 	int VelocityXHash, VelocityZHash;
 
-    // Start is called before the first frame update
+	private PhotonView PV;
+
+	private void Awake()
+	{
+		animator = GetComponent<Animator>();
+		PV = GetComponent<PhotonView>();
+	}
+
+	// Start is called before the first frame update
     void Start()
     {
-        animator = GetComponent<Animator>();
-
-        //Refactor
         VelocityZHash = Animator.StringToHash("VelocityZ");
         VelocityXHash = Animator.StringToHash("VelocityX"); 
     }
@@ -25,6 +32,9 @@ public class TwoDimensionalAnimationStateController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+	    if (!PV.IsMine)
+		    return;
+	    
         //Get player input
 		bool forwardPressed = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S);		//Forward or Backward
 		bool leftPressed = Input.GetKey(KeyCode.A);

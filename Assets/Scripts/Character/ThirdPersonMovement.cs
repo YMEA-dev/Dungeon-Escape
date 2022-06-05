@@ -7,7 +7,7 @@ using Photon.Pun;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
-    public static ThirdPersonMovement Instance;
+    //public static ThirdPersonMovement Instance;
     
     public CharacterController controller;
     public Transform cam;
@@ -30,7 +30,7 @@ public class ThirdPersonMovement : MonoBehaviour
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
-        Instance = this;
+        //Instance = this;
     }
 
     void Start()
