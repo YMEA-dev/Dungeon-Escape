@@ -16,11 +16,13 @@ public class ThirdPersonMovement : MonoBehaviour
     public LayerMask groundMask;
     public LayerMask wallMask;
     
-    public float gravity = -9.81f;
+    public float gravity;
     public float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity;
+    private float timeMidAir;
 
     public bool isGrounded;
+    private bool jumpTrigger;
     
     private Vector3 velocity;
 
@@ -84,11 +86,28 @@ public class ThirdPersonMovement : MonoBehaviour
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask | wallMask);
         if (isGrounded && velocity.y < 0)
             velocity.y = -2f;
-        
-        if (Input.GetButtonDown("Jump") && isGrounded)
-            velocity.y = Mathf.Sqrt(-2f * myStats.JumpHeight * gravity);    
+
+        if (jumpTrigger && isGrounded)
+        {
+            velocity.y = Mathf.Sqrt(-2f * myStats.JumpHeight * gravity);
+            timeMidAir = 0;
+            jumpTrigger = false;
+        }
+
+        if (!isGrounded)
+        {
+            timeMidAir += Time.deltaTime;
+            controller.Move(controller.transform.forward
+                * Time.deltaTime * myStats.Speed / (timeMidAir + 1));
+        }
         
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    public void EnableJumpTrigger()
+    {
+        Debug.Log("Enabled jump trigger");
+        jumpTrigger = true;
     }
 }
