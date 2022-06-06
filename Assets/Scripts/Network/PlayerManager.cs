@@ -25,13 +25,12 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    void CreateController()
-    {
+    void CreateController(){
         int randX = Random.Range(70, 263);
         int randZ = Random.Range(-222, -33);
         instanciatedGameObject = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerController"), new Vector3(randX, 4.7f, randZ), Quaternion.identity);
         //Faudrait penser à changer les coordonnées Y pour l'instanciation.
         Launcher.Instance.PlayersObject.Add(PV.Owner.ActorNumber, instanciatedGameObject);
-        PV.Owner.TagObject = instanciatedGameObject;
+        //PV.Owner.TagObject = instanciatedGameObject;
     }
 }
