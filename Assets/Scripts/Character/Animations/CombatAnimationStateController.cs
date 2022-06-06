@@ -2,12 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Photon.Pun;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 public class CombatAnimationStateController : MonoBehaviour
 {
-    public static CombatAnimationStateController Instance;
+    //public static CombatAnimationStateController Instance;
     
     private Animator animator;
     //private AnimationClip clip;
@@ -23,6 +24,8 @@ public class CombatAnimationStateController : MonoBehaviour
 
     [HideInInspector]
     public bool slashed, plunged, casted, stunned;
+
+    private PhotonView PV;
 
     #region GetAnimationsLength
     
@@ -50,7 +53,7 @@ public class CombatAnimationStateController : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        PV = GetComponent<PhotonView>();
     }
 
     // Start is called before the first frame update
@@ -63,6 +66,9 @@ public class CombatAnimationStateController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!PV.IsMine)
+            return;
+        
         //Problem with attackPress when using GetKeyDown
         bool attackPress = Input.GetKey(KeyCode.Mouse0);
         bool blockPress = Input.GetKey(KeyCode.Mouse1);

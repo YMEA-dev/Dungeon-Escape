@@ -1,15 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
+using Photon.Pun.Demo.SlotRacer;
 using UnityEngine;
 
 public class BehaviourAnimationStateController : MonoBehaviour
 {
+    
     private Animator animator;
 
     private bool jumped = false;
     private float jumpingTime, jumpingDuration;
     private float prevAnimationSpeed;
     private float timeMidAir;
+
+    private PhotonView PV;
+    private ThirdPersonMovement playerController;
         
     #region GetAnimationsLength
     
@@ -29,32 +35,44 @@ public class BehaviourAnimationStateController : MonoBehaviour
         
     #endregion
 
+    
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         animator = GetComponent<Animator>();
+        PV = GetComponent<PhotonView>();
+        playerController = GetComponent<ThirdPersonMovement>();
         GetAnimClipTime();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!PV.IsMine)
+            return;
+        
         bool jumpPress = Input.GetKey(KeyCode.Space);
 
         if (jumpPress)
         {
+            Debug.Log("Jumping animation start");
             animator.SetBool("IsJumping", true);
             jumpingDuration = Time.time + jumpingTime;
             jumped = true;
         }
 
-        if (jumped && jumpingDuration < Time.time)
+        if (playerController.isGrounded && animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Falling Idle")
+        {
+            animator.SetBool("IsJumping", false);
+        }
+
+        /*if (jumped && jumpingDuration < Time.time)
         {
             animator.SetBool("IsJumping", false);
             jumped = false;
         }
 
-        if (animator.speed == 0 && ThirdPersonMovement.Instance.isGrounded)
+        if (animator.speed == 0 && playerController.isGrounded)
         {
             animator.speed = prevAnimationSpeed;
             timeMidAir = 0f;
@@ -62,9 +80,9 @@ public class BehaviourAnimationStateController : MonoBehaviour
         else if (animator.speed == 0)
         {
             timeMidAir += Time.deltaTime;
-            ThirdPersonMovement.Instance.controller.Move(ThirdPersonMovement.Instance.controller.transform.forward
-                * Time.deltaTime * ThirdPersonMovement.Instance.myStats.Speed / (timeMidAir + 1));
-        }
+            playerController.controller.Move(playerController.controller.transform.forward
+                * Time.deltaTime * playerController.myStats.Speed / (timeMidAir + 1));
+        }*/
     }
 
     public void PlayDying()
@@ -77,8 +95,8 @@ public class BehaviourAnimationStateController : MonoBehaviour
 
     void StopJumpAnimation()
     {
-        prevAnimationSpeed = animator.speed;
-        animator.speed = 0;
+        //prevAnimationSpeed = animator.speed;
+        //animator.speed = 0;
     }
     
     public bool AnimationIsPlaying(string animationName)

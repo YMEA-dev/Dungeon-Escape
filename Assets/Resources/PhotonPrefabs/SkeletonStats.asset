@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SkeletonStats
   m_EditorClassIdentifier: 
   Health: 100
-  BaseHealth: 100
+  BaseHealth: 25
   Attack: 10
   Speed: 12
   JumpHeight: 0

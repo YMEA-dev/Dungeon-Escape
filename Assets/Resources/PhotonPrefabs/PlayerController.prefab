@@ -584,7 +584,7 @@ MonoBehaviour:
     SynchronizeType: 2
     Name: HitWall
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: IsDying
   m_SynchronizeLayers:
   - SynchronizeType: 0

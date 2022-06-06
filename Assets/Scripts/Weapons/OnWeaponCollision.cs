@@ -29,7 +29,9 @@ public class OnWeaponCollision : MonoBehaviour
         }
         else if (colliderLayer == "Wall")
         {
-            CombatAnimationStateController.Instance.stunActivated = true;
+            CombatAnimationStateController combatController =
+                playerObject.GetComponent<CombatAnimationStateController>();
+            combatController.stunActivated = true;
             Debug.Log("Weapon hit a wall");
         }
     }
