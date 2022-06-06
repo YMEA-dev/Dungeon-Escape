@@ -9,7 +9,6 @@ public class BehaviourAnimationStateController : MonoBehaviour
     
     private Animator animator;
 
-    private bool jumped = false;
     private float jumpingTime, jumpingDuration;
     private float prevAnimationSpeed;
     private float timeMidAir;
@@ -58,7 +57,6 @@ public class BehaviourAnimationStateController : MonoBehaviour
             Debug.Log("Jumping animation start");
             animator.SetBool("IsJumping", true);
             jumpingDuration = Time.time + jumpingTime;
-            jumped = true;
         }
 
         if (playerController.isGrounded && animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Falling Idle")

@@ -44,6 +44,7 @@ public class ThirdPersonMovement : MonoBehaviour
             Destroy(GetComponentInChildren<Camera>().gameObject);
         }
 
+        PV.Owner.TagObject = gameObject;
         myStats.Health = myStats.BaseHealth;
     }
     

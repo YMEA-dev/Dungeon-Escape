@@ -52,9 +52,14 @@ public class EnemyBehaviourController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!PV.IsMine)
-            return;
+        //if (!PV.IsMine)
+        //    return;
         
+        Debug.Log(PhotonNetwork.PlayerList.Length);
+        foreach (var player in PhotonNetwork.PlayerList)
+        {
+            Debug.Log((GameObject)player.TagObject);
+        }
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, Player);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, Player);
 
@@ -131,7 +136,7 @@ public class EnemyBehaviourController : MonoBehaviour
         {
             GameObject playerObject = (GameObject) player.TagObject;
             Transform playerTransform = playerObject.transform;
-
+            
             if (Vector3.Distance(playerObject.transform.position, transform.position) <= sightRange)
             {
                 Vector3 sightObjective = new Vector3(playerTransform.position.x, transform.position.y,
