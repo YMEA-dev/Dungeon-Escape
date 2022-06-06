@@ -44,9 +44,14 @@ public class ThirdPersonMovement : MonoBehaviour
             Destroy(GetComponentInChildren<Camera>().gameObject);
         }
 
-        PV.Owner.TagObject = gameObject;
         myStats.Health = myStats.BaseHealth;
     }
+
+    /*public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        Debug.Log(gameObject);
+        info.Sender.TagObject = gameObject;
+    }*/
     
     void Update()
     {
@@ -108,7 +113,6 @@ public class ThirdPersonMovement : MonoBehaviour
 
     public void EnableJumpTrigger()
     {
-        Debug.Log("Enabled jump trigger");
         jumpTrigger = true;
     }
 }

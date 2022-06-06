@@ -54,7 +54,6 @@ public class BehaviourAnimationStateController : MonoBehaviour
 
         if (jumpPress)
         {
-            Debug.Log("Jumping animation start");
             animator.SetBool("IsJumping", true);
             jumpingDuration = Time.time + jumpingTime;
         }
@@ -63,24 +62,6 @@ public class BehaviourAnimationStateController : MonoBehaviour
         {
             animator.SetBool("IsJumping", false);
         }
-
-        /*if (jumped && jumpingDuration < Time.time)
-        {
-            animator.SetBool("IsJumping", false);
-            jumped = false;
-        }
-
-        if (animator.speed == 0 && playerController.isGrounded)
-        {
-            animator.speed = prevAnimationSpeed;
-            timeMidAir = 0f;
-        }
-        else if (animator.speed == 0)
-        {
-            timeMidAir += Time.deltaTime;
-            playerController.controller.Move(playerController.controller.transform.forward
-                * Time.deltaTime * playerController.myStats.Speed / (timeMidAir + 1));
-        }*/
     }
 
     public void PlayDying()

@@ -7,7 +7,7 @@ using Photon.Realtime;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-public class Launcher : MonoBehaviourPunCallbacks 
+public class Launcher : MonoBehaviourPunCallbacks
 {
     public static Launcher Instance;
     
