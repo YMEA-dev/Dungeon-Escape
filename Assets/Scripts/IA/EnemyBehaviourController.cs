@@ -34,6 +34,10 @@ public class EnemyBehaviourController : MonoBehaviour
     public CharacterStats myStats;
 
     private PhotonView PV;
+
+    [HideInInspector] public GameObject target;
+    [HideInInspector] public float distance = Single.PositiveInfinity;
+    public SphereCollider sightSphere, attackSphere;
     
     // Start is called before the first frame update
     void Awake()
@@ -41,6 +45,9 @@ public class EnemyBehaviourController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         PV = GetComponent<PhotonView>();
         animatorController = GetComponent<EnemyAnimatorStateController>();
+
+        sightSphere.radius = sightRange;
+        attackSphere.radius = attackRange;
     }
 
     private void Start()
@@ -52,23 +59,26 @@ public class EnemyBehaviourController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (!PV.IsMine)
-        //    return;
+        if (!PV.IsMine)
+            return;
         
-        Debug.Log(PhotonNetwork.PlayerList.Length);
+        /*Debug.Log(PhotonNetwork.PlayerList.Length);
         foreach (var player in PhotonNetwork.PlayerList)
         {
             Debug.Log((GameObject)player.TagObject);
         }
+        
+        Debug.Log(go[0] == go[1] || go[0] == go[2] || go[0] == go[3] ||
+                         go[1] == go[2] || go[1] == go[3] || go[2] == go[3]);*/
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, Player);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, Player);
 
-        if (!playerInSightRange && !playerInAttackRange)
+        /*if (!playerInSightRange && !playerInAttackRange)
             Patrolling();
         if (playerInSightRange && !playerInAttackRange)
             ChasePlayer();
         if (playerInAttackRange && playerInSightRange)
-            AttackPlayer();
+            AttackPlayer();*/
         
         if (myStats.Health <= 0)
             myStats.Die(gameObject);
@@ -134,7 +144,8 @@ public class EnemyBehaviourController : MonoBehaviour
 
         foreach (Player player in PhotonNetwork.PlayerList)
         {
-            GameObject playerObject = (GameObject) player.TagObject;
+            GameObject playerObject = 
+                ((GameObject) player.TagObject).GetComponent<PlayerManager>().instanciatedGameObject;
             Transform playerTransform = playerObject.transform;
             
             if (Vector3.Distance(playerObject.transform.position, transform.position) <= sightRange)
