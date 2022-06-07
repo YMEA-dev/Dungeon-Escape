@@ -82,7 +82,7 @@ public class EnemyBehaviourController : MonoBehaviour
     {
         agent.speed = (float)EnemyParameters.MonsterState.Patrolling;
 
-        if (Physics.Raycast(transform.position, Vector3.forward, 5f, Wall))
+        if (Physics.Raycast(transform.position, Vector3.forward, 5f, Wall | Ground))
             walkPointSet = false;
 
         if (!walkPointSet)
