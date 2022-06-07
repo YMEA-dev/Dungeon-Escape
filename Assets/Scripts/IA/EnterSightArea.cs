@@ -40,6 +40,8 @@ public class EnterSightArea : MonoBehaviour
         //Debug.Log("Player is still in sight zone");
         
         float distance = Vector3.Distance(collisionObject.transform.position, transform.position);
+        if (collisionObject == enemyController.target)
+            enemyController.distance = distance;
         if (distance < enemyController.distance)
         {
             enemyController.target = collisionObject;
