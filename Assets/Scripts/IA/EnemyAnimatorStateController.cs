@@ -56,6 +56,8 @@ public class EnemyAnimatorStateController : MonoBehaviour
             //Debug.Log("Attack finished");
             animator.SetBool(IsAttackingHash, false);
         }
+        if (AnimationHasFinished("Impact"))
+            StunAnimationEnd();
     }
 
     void PlayWalk()
