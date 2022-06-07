@@ -7,7 +7,7 @@ public class KeyGate : MonoBehaviour
 {
     private void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.name == "player" && GameVariables.keyCount > 1)
+        if (collider.CompareTag("Player") && GameVariables.keyCount > 1)
         {
             GameVariables.keyCount = 0;
             Destroy(gameObject);

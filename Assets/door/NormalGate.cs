@@ -6,7 +6,7 @@ public class NormalGate : MonoBehaviour
 {
     private void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.name == "player")
+        if (collider.CompareTag("Player"))
         {
             Destroy(gameObject);
         }
