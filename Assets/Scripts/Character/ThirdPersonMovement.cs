@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 using Photon.Pun;
+using Random = UnityEngine.Random;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public class ThirdPersonMovement : MonoBehaviour
 
     private PhotonView PV;
     public CharacterStats myStats;
+    [HideInInspector] public float health;
 
     private void Awake()
     {
@@ -44,7 +46,7 @@ public class ThirdPersonMovement : MonoBehaviour
             Destroy(GetComponentInChildren<Camera>().gameObject);
         }
 
-        myStats.Health = myStats.BaseHealth;
+        health = myStats.BaseHealth;
     }
 
     /*public void OnPhotonInstantiate(PhotonMessageInfo info)
@@ -57,11 +59,13 @@ public class ThirdPersonMovement : MonoBehaviour
     {
         if (!PV.IsMine)
             return;
+        
+        Debug.Log("Health: " + health);
 
         Jump();
         Move();
         
-        if (myStats.Health <= 0)
+        if (health <= 0)
             myStats.Die(gameObject);
     }
 

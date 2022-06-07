@@ -368,6 +368,7 @@ GameObject:
   - component: {fileID: 505308074659677760}
   - component: {fileID: 3166717989983163472}
   - component: {fileID: -5086168298940524527}
+  - component: {fileID: 4144784181461598294}
   m_Layer: 6
   m_Name: PlayerController
   m_TagString: Player
@@ -437,6 +438,7 @@ MonoBehaviour:
   turnSmoothTime: 0.1
   isGrounded: 0
   myStats: {fileID: 11400000, guid: fdf548eb2fcf4c54d855322a56f5f62e, type: 2}
+  health: 0
 --- !u!95 &7642906594222568036
 Animator:
   serializedVersion: 3
@@ -618,6 +620,20 @@ Animation:
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &4144784181461598294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4309611806163140224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 358559ebb922da04d83e0f6202d89acc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 0}
+  health: 0
 --- !u!1 &4575543185117643270
 GameObject:
   m_ObjectHideFlags: 0
