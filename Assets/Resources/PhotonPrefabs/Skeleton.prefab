@@ -2589,17 +2589,22 @@ MonoBehaviour:
   Player:
     serializedVersion: 2
     m_Bits: 64
-  walkPointRange: 30
+  Wall:
+    serializedVersion: 2
+    m_Bits: 512
+  walkPointRange: 1000
   timeBetweenAttacks: 3
   sightRange: 34
   attackRange: 6
   playerInSightRange: 0
   playerInAttackRange: 0
-  myStats: {fileID: 11400000, guid: cdc955d4dfe7e0247b3fa0e10b2573b2, type: 2}
+  myStats: {fileID: 11400000, guid: 9240e14f4a6ac254eb9a9049845d9a8a, type: 2}
   target: {fileID: 0}
   distance: Infinity
   sightSphere: {fileID: 5695128040339537796}
   attackSphere: {fileID: 625605562927796878}
+  health: 0
+  hasDied: 0
 --- !u!136 &1947476556778170546
 CapsuleCollider:
   m_ObjectHideFlags: 0

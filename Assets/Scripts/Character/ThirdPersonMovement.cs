@@ -37,6 +37,7 @@ public class ThirdPersonMovement : MonoBehaviour
         //Instance = this;
     }
 
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -60,7 +61,7 @@ public class ThirdPersonMovement : MonoBehaviour
         if (!PV.IsMine)
             return;
         
-        Debug.Log("Health: " + health);
+        //Debug.Log("Health: " + health);
 
         Jump();
         Move();

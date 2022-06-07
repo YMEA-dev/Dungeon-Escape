@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,16 +7,29 @@ public class OnWeaponCollision : MonoBehaviour
 {
     [SerializeField]
     private GameObject playerObject;
+    private ThirdPersonMovement playerController;
+
+    private void Awake()
+    {
+        playerController = playerObject.GetComponent<ThirdPersonMovement>();
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log("COLLISION");
         string colliderLayer = LayerMask.LayerToName(collision.gameObject.layer);
+
         if (colliderLayer == "Player")
-            return;
-        
-        /*if (colliderLayer == "Ground")
-            Debug.Log("Sword hit a wall");*/
+        {
+            GameObject targetObject = collision.gameObject;
+            while (!targetObject.name.Contains("PlayerController"))
+                targetObject = targetObject.transform.parent.gameObject;
+            if (targetObject == playerObject)
+                return;
+            ThirdPersonMovement targetController = targetObject.GetComponent<ThirdPersonMovement>();
+            targetController.myStats.TakeDamage(playerController.myStats.Attack, ref targetController.health);
+            Debug.Log("Sword hit another player");
+        }
         if (colliderLayer == "Enemy")
         {
             GameObject enemyObject = collision.gameObject;
@@ -23,8 +37,7 @@ public class OnWeaponCollision : MonoBehaviour
             EnemyAnimatorStateController enemyAnimatorController =
                 enemyObject.GetComponent<EnemyAnimatorStateController>();
             
-            enemyController.myStats.TakeDamage(playerObject.GetComponent<ThirdPersonMovement>().myStats.Attack, 
-                                               ref enemyController.health);
+            enemyController.myStats.TakeDamage(playerController.myStats.Attack, ref enemyController.health);
             enemyAnimatorController.isHit = true;
             Debug.Log("Sword hit an enemy");   
         }

@@ -33,9 +33,13 @@ public class CharacterStats : ScriptableObject
         {
             EnemyAnimatorStateController animationController = gameObject.GetComponent<EnemyAnimatorStateController>();
             animationController.PlayDying();
-            
+
             if (animationController.AnimationHasFinished("Death"))
+            {
                 Destroy(gameObject);
+                gameObject.GetComponent<EnemyBehaviourController>().hasDied = true;
+                
+            }
         }
         else if (gameObject.CompareTag("Player"))
         {

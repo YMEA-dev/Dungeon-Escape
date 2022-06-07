@@ -80,9 +80,9 @@ public class EnemyBehaviourController : MonoBehaviour
 
     private void Patrolling()
     {
-        agent.speed = (float)EnemyParameters.MonsterState.Patrolling;
+        agent.speed = myStats.Speed;
 
-        if (Physics.Raycast(transform.position, Vector3.forward, 5f, Wall | Ground))
+        if (Physics.Raycast(transform.position, Vector3.forward, 5f, Ground))
             walkPointSet = false;
 
         if (!walkPointSet)
@@ -117,29 +117,15 @@ public class EnemyBehaviourController : MonoBehaviour
 
     private void ChasePlayer()
     {
-        if (target is null)
+        if (target is null || animatorController.AnimationIsPlaying("Attack"))
             return;
-        
-        agent.speed = (float)EnemyParameters.MonsterState.Chasing;
+
+        agent.speed = myStats.Speed * myStats.SprintCoeff;
         
         Vector3 sightObjective = new Vector3(target.transform.position.x, transform.position.y,
             target.transform.position.z);
         transform.LookAt(sightObjective);
         agent.SetDestination(target.transform.position);
-        
-        /*foreach (Player player in PhotonNetwork.PlayerList)
-        {
-            GameObject playerObject = (GameObject) player.TagObject;
-            Transform playerTransform = playerObject.transform;
-            
-            if (Vector3.Distance(playerTransform.position, transform.position) <= sightRange)
-            {
-                Vector3 sightObjective = new Vector3(playerTransform.position.x, transform.position.y,
-                    playerTransform.position.z);
-                transform.LookAt(sightObjective);
-                agent.SetDestination(playerTransform.position);
-            }
-        }*/
     }
 
     private void AttackPlayer()
@@ -152,20 +138,6 @@ public class EnemyBehaviourController : MonoBehaviour
         Vector3 sightObjective = new Vector3(target.transform.position.x, transform.position.y,
             target.transform.position.z);
         transform.LookAt(sightObjective);
-
-        /*foreach (Player player in PhotonNetwork.PlayerList)
-        {
-            GameObject playerObject = 
-                ((GameObject) player.TagObject).GetComponent<PlayerManager>().instanciatedGameObject;
-            Transform playerTransform = playerObject.transform;
-            
-            if (Vector3.Distance(playerObject.transform.position, transform.position) <= sightRange)
-            {
-                Vector3 sightObjective = new Vector3(playerTransform.position.x, transform.position.y,
-                    playerTransform.position.z);
-                transform.LookAt(sightObjective);
-            }
-        }*/
 
         if (Time.time > attackStartTime + timeBetweenAttacks)
         {
@@ -183,8 +155,7 @@ public class EnemyBehaviourController : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, sightRange);
+        Vector3 distance = transform.TransformDirection(Vector3.forward) * 5;
+        Gizmos.DrawRay(transform.position, distance);
     }
 }
