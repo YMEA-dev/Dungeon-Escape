@@ -14,7 +14,7 @@ public class EnemyBehaviourController : MonoBehaviour
     
     public NavMeshAgent agent;
     
-    public LayerMask Ground, Player;
+    public LayerMask Ground, Player, Wall;
     
     //Patroling 
     private Vector3 walkPoint, previousPosition;
@@ -40,7 +40,7 @@ public class EnemyBehaviourController : MonoBehaviour
     public SphereCollider sightSphere, attackSphere;
 
     [HideInInspector] public float health;
-    private bool hasDied;
+    [HideInInspector] public bool hasDied;
     
     // Start is called before the first frame update
     void Awake()
@@ -75,13 +75,15 @@ public class EnemyBehaviourController : MonoBehaviour
         if (health <= 0)
         {
             myStats.Die(gameObject);
-            hasDied = true;
         }
     }
 
     private void Patrolling()
     {
         agent.speed = (float)EnemyParameters.MonsterState.Patrolling;
+
+        if (Physics.Raycast(transform.position, Vector3.forward, 5f, Wall))
+            walkPointSet = false;
 
         if (!walkPointSet)
         {
@@ -109,8 +111,7 @@ public class EnemyBehaviourController : MonoBehaviour
 
         walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
 
-        if (Physics.Raycast(walkPoint, -transform.up, 2f, Ground) && 
-            !Physics.Raycast(walkPoint, transform.forward, 3f, Ground))
+        if (Physics.Raycast(walkPoint, -transform.up, 2f, Ground))
             walkPointSet = true;
     }
 
