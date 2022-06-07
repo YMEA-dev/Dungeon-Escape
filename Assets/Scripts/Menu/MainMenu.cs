@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,7 +8,14 @@ public class MainMenu : MonoBehaviour
 {
     public void PlayGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        //PhotonNetwork.OfflineMode = true;
+        PhotonNetwork.LoadLevel(2);
+    }
+
+    public void GoToMultiplayer()
+    {
+        //PhotonNetwork.OfflineMode = false;
+        SceneManager.LoadScene(1);
     }
 
     public void QuitGame()

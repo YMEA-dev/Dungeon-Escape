@@ -98,13 +98,13 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void StartGame()
     {
-        PhotonNetwork.LoadLevel(1);
+        PhotonNetwork.LoadLevel(2);
     }
 
     public void QuitGame()
     {
         PhotonNetwork.Disconnect();
-        PhotonNetwork.LoadLevel(0);
+        PhotonNetwork.LoadLevel(1);
     }
 
     public override void OnDisconnected(DisconnectCause cause)
