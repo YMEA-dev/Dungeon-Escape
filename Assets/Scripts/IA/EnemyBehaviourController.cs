@@ -40,6 +40,7 @@ public class EnemyBehaviourController : MonoBehaviour
     public SphereCollider sightSphere, attackSphere;
 
     [HideInInspector] public float health;
+    private bool hasDied;
     
     // Start is called before the first frame update
     void Awake()
@@ -61,19 +62,8 @@ public class EnemyBehaviourController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (!PV.IsMine)
-        //    return;
-        
-        /*Debug.Log(PhotonNetwork.PlayerList.Length);
-        foreach (var player in PhotonNetwork.PlayerList)
-        {
-            Debug.Log((GameObject)player.TagObject);
-        }
-        
-        Debug.Log(go[0] == go[1] || go[0] == go[2] || go[0] == go[3] ||
-                         go[1] == go[2] || go[1] == go[3] || go[2] == go[3]);*/
-        //playerInSightRange = Physics.CheckSphere(transform.position, sightRange, Player);
-        //playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, Player);
+        if (!PV.IsMine || hasDied)
+            return;
 
         if (!playerInSightRange && !playerInAttackRange)
             Patrolling();
@@ -81,9 +71,12 @@ public class EnemyBehaviourController : MonoBehaviour
             ChasePlayer();
         if (playerInAttackRange && playerInSightRange)
             AttackPlayer();
-        
+
         if (health <= 0)
+        {
             myStats.Die(gameObject);
+            hasDied = true;
+        }
     }
 
     private void Patrolling()
