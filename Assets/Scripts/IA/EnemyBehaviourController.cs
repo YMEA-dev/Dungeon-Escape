@@ -85,6 +85,9 @@ public class EnemyBehaviourController : MonoBehaviour
         if (Physics.Raycast(transform.position, Vector3.forward, 5f, Ground))
             walkPointSet = false;
 
+        if (Physics.CheckSphere(transform.position, 5f, Wall))
+            walkPointSet = false;
+
         if (!walkPointSet)
         {
             SearchWalkPoint();

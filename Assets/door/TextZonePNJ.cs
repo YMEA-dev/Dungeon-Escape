@@ -7,7 +7,7 @@ public class TextZonePNJ : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name == "player")
+        if (other.CompareTag("Player"))
         {
             
         }

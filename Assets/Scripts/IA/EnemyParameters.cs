@@ -15,7 +15,7 @@ public class EnemyParameters : MonoBehaviour
 
     public enum MonsterState
     {
-        Patrolling = 12,
-        Chasing = 24
+        Patrolling = 8,
+        Chasing = 15
     }
 }
