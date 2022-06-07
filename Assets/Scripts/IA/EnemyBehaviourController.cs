@@ -38,6 +38,8 @@ public class EnemyBehaviourController : MonoBehaviour
     [HideInInspector] public GameObject target;
     [HideInInspector] public float distance = Single.PositiveInfinity;
     public SphereCollider sightSphere, attackSphere;
+
+    [HideInInspector] public float health;
     
     // Start is called before the first frame update
     void Awake()
@@ -53,14 +55,14 @@ public class EnemyBehaviourController : MonoBehaviour
     private void Start()
     {
         previousPosition = transform.position;
-        myStats.Health = myStats.BaseHealth;
+        health = myStats.BaseHealth;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!PV.IsMine)
-            return;
+        //if (!PV.IsMine)
+        //    return;
         
         /*Debug.Log(PhotonNetwork.PlayerList.Length);
         foreach (var player in PhotonNetwork.PlayerList)
@@ -70,17 +72,17 @@ public class EnemyBehaviourController : MonoBehaviour
         
         Debug.Log(go[0] == go[1] || go[0] == go[2] || go[0] == go[3] ||
                          go[1] == go[2] || go[1] == go[3] || go[2] == go[3]);*/
-        playerInSightRange = Physics.CheckSphere(transform.position, sightRange, Player);
-        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, Player);
+        //playerInSightRange = Physics.CheckSphere(transform.position, sightRange, Player);
+        //playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, Player);
 
-        /*if (!playerInSightRange && !playerInAttackRange)
+        if (!playerInSightRange && !playerInAttackRange)
             Patrolling();
         if (playerInSightRange && !playerInAttackRange)
             ChasePlayer();
         if (playerInAttackRange && playerInSightRange)
-            AttackPlayer();*/
+            AttackPlayer();
         
-        if (myStats.Health <= 0)
+        if (health <= 0)
             myStats.Die(gameObject);
     }
 
@@ -121,9 +123,17 @@ public class EnemyBehaviourController : MonoBehaviour
 
     private void ChasePlayer()
     {
+        if (target is null)
+            return;
+        
         agent.speed = (float)EnemyParameters.MonsterState.Chasing;
         
-        foreach (Player player in PhotonNetwork.PlayerList)
+        Vector3 sightObjective = new Vector3(target.transform.position.x, transform.position.y,
+            target.transform.position.z);
+        transform.LookAt(sightObjective);
+        agent.SetDestination(target.transform.position);
+        
+        /*foreach (Player player in PhotonNetwork.PlayerList)
         {
             GameObject playerObject = (GameObject) player.TagObject;
             Transform playerTransform = playerObject.transform;
@@ -135,14 +145,21 @@ public class EnemyBehaviourController : MonoBehaviour
                 transform.LookAt(sightObjective);
                 agent.SetDestination(playerTransform.position);
             }
-        }
+        }*/
     }
 
     private void AttackPlayer()
     {
+        if (target is null)
+            return;
+        
         agent.SetDestination(transform.position);
 
-        foreach (Player player in PhotonNetwork.PlayerList)
+        Vector3 sightObjective = new Vector3(target.transform.position.x, transform.position.y,
+            target.transform.position.z);
+        transform.LookAt(sightObjective);
+
+        /*foreach (Player player in PhotonNetwork.PlayerList)
         {
             GameObject playerObject = 
                 ((GameObject) player.TagObject).GetComponent<PlayerManager>().instanciatedGameObject;
@@ -154,7 +171,7 @@ public class EnemyBehaviourController : MonoBehaviour
                     playerTransform.position.z);
                 transform.LookAt(sightObjective);
             }
-        }
+        }*/
 
         if (Time.time > attackStartTime + timeBetweenAttacks)
         {

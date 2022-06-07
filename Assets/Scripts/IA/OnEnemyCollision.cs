@@ -21,7 +21,8 @@ public class OnEnemyCollision : MonoBehaviour
             ThirdPersonMovement playerController = playerObject.GetComponent<ThirdPersonMovement>();
             //EnemyAnimatorStateController playerAnimatorController = enemyObject.GetComponent<EnemyAnimatorStateController>();
             
-            playerController.myStats.TakeDamage(enemyObject.GetComponent<EnemyBehaviourController>().myStats.Attack);
+            playerController.myStats.TakeDamage(enemyObject.GetComponent<EnemyBehaviourController>().myStats.Attack,
+                                                ref playerController.health);
             Debug.Log("Enemy hit a player");   
         }
     }

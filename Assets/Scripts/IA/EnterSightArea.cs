@@ -20,8 +20,9 @@ public class EnterSightArea : MonoBehaviour
         if (!collisionObject.CompareTag("Player"))
             return;
 
-        Debug.Log("Player entered sight zone");
+        //Debug.Log("Player entered sight zone");
 
+        enemyController.playerInSightRange = true;
         float distance = Vector3.Distance(collisionObject.transform.position, transform.position);
         if (distance < enemyController.distance)
         {
@@ -36,7 +37,7 @@ public class EnterSightArea : MonoBehaviour
         if (!collisionObject.CompareTag("Player"))
             return;
 
-        Debug.Log("Player is still in sight zone");
+        //Debug.Log("Player is still in sight zone");
         
         float distance = Vector3.Distance(collisionObject.transform.position, transform.position);
         if (distance < enemyController.distance)
@@ -52,8 +53,9 @@ public class EnterSightArea : MonoBehaviour
         if (!collisionObject.CompareTag("Player"))
             return;
         
-        Debug.Log("Player exited sight zone");
+        //Debug.Log("Player exited sight zone");
 
+        enemyController.playerInSightRange = false;
         enemyController.target = null;
         enemyController.distance = Single.PositiveInfinity;
     }

@@ -23,7 +23,8 @@ public class OnWeaponCollision : MonoBehaviour
             EnemyAnimatorStateController enemyAnimatorController =
                 enemyObject.GetComponent<EnemyAnimatorStateController>();
             
-            enemyController.myStats.TakeDamage(playerObject.GetComponent<ThirdPersonMovement>().myStats.Attack);
+            enemyController.myStats.TakeDamage(playerObject.GetComponent<ThirdPersonMovement>().myStats.Attack, 
+                                               ref enemyController.health);
             enemyAnimatorController.isHit = true;
             Debug.Log("Sword hit an enemy");   
         }

@@ -6,7 +6,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Stats", menuName = "CharacterStats")]
 public class CharacterStats : ScriptableObject
 {
-    [HideInInspector] public float Health;
     public float BaseHealth;
     public float Attack;
     public float Speed;
@@ -21,10 +20,11 @@ public class CharacterStats : ScriptableObject
         IsDyingHash = Animator.StringToHash("IsDying");
     }
 
-    public void TakeDamage(float attackDamage)
+    public void TakeDamage(float attackDamage, ref float health)
     {
-        Health -= attackDamage;
-        Debug.Log("Health: " + Health);
+        //ENVOYER REF PLUTOT QUE VALEUR POUR QUE LES CHANGEMENTS SOIENT APPLIQUES
+        health -= attackDamage;
+        Debug.Log("Health: " + health);
     }
 
     public virtual void Die(GameObject gameObject)
