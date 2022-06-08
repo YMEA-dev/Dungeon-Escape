@@ -66,7 +66,7 @@ public class CombatAnimationStateController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!PV.IsMine)
+        if (!PV.IsMine || PauseMenu.GameIsPaused)
             return;
         
         //Problem with attackPress when using GetKeyDown

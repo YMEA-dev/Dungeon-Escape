@@ -32,7 +32,7 @@ public class TwoDimensionalAnimationStateController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-	    if (!PV.IsMine)
+	    if (!PV.IsMine || PauseMenu.GameIsPaused)
 		    return;
 	    
         //Get player input
