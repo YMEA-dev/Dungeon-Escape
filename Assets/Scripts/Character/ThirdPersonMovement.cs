@@ -8,8 +8,7 @@ using Random = UnityEngine.Random;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
-    //public static ThirdPersonMovement Instance;
-    
+    //public static ThirdPersonMovement Instance;   
     public CharacterController controller;
     public Transform cam;
     public Transform groundCheck;
@@ -69,7 +68,7 @@ public class ThirdPersonMovement : MonoBehaviour
 
         Jump();
         Move();
-        
+                
         if (health <= 0)
             myStats.Die(gameObject);
     }
@@ -123,5 +122,10 @@ public class ThirdPersonMovement : MonoBehaviour
     public void EnableJumpTrigger()
     {
         jumpTrigger = true;
+    }
+
+    public void TeleportTo(Vector3 tpPoint)
+    {
+        transform.position = tpPoint;
     }
 }

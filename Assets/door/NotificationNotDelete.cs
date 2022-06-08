@@ -6,6 +6,7 @@ namespace door
 {
     public class NotificationNotDelete : MonoBehaviour
     {
+        [SerializeField] private AudioClip clip;
         [SerializeField] private Text notificationTextUI;
         [SerializeField] private Image itemIconUI;
         [SerializeField] private Sprite yourIcon;
@@ -25,6 +26,7 @@ namespace door
         {
             if (other.CompareTag("Player"))
             {
+                AudioSource.PlayClipAtPoint(clip, other.transform.position, 2f);
                 StartCoroutine(EnableNotification());
             }
         }
