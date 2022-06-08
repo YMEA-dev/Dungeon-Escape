@@ -1,14 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class NormalGate : MonoBehaviour
+namespace door
 {
-    private void OnTriggerEnter(Collider collider)
+    public class NormalGate : MonoBehaviour
     {
-        if (collider.CompareTag("Player"))
+        private void OnTriggerEnter(Collider collider)
         {
-            Destroy(gameObject);
+            if (collider.CompareTag("Player"))
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
