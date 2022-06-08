@@ -58,10 +58,12 @@ public class ThirdPersonMovement : MonoBehaviour
     
     void Update()
     {
-        Debug.Log(PhotonNetwork.OfflineMode);
-        
-        if (!PV.IsMine)
+        //Debug.Log(PhotonNetwork.OfflineMode);
+
+        if (!PV.IsMine || PauseMenu.GameIsPaused)
+        {
             return;
+        }
         
         //Debug.Log("Health: " + health);
 

@@ -107,13 +107,14 @@ public class Launcher : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel(1);
     }
 
-    public override void OnDisconnected(DisconnectCause cause)
-    {
-        Start();
-    }
-
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         PlayersObject.Remove(otherPlayer.ActorNumber);
+    }
+
+    public void GoToMainMenu()
+    {
+        PhotonNetwork.Disconnect();
+        PhotonNetwork.LoadLevel(0);
     }
 }

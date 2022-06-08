@@ -47,7 +47,7 @@ public class BehaviourAnimationStateController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!PV.IsMine)
+        if (!PV.IsMine || PauseMenu.GameIsPaused)
             return;
         
         bool jumpPress = Input.GetKey(KeyCode.Space);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +17,6 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        Debug.Log("AAAAAAAAAAAAAA");
         base.OnConnectedToMaster();
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.CreateRoom(null);
