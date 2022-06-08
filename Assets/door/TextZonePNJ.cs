@@ -1,15 +1,15 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class TextZonePNJ : MonoBehaviour
+namespace door
 {
-    private void OnTriggerEnter(Collider other)
+    public class TextZonePNJ : MonoBehaviour
     {
-        if (other.CompareTag("Player"))
+        private void OnTriggerEnter(Collider other)
         {
+            if (other.CompareTag("Player"))
+            {
             
+            }
         }
     }
 }

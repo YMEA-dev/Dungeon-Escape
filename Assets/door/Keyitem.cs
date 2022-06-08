@@ -1,19 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Keyitem : MonoBehaviour
+namespace door
 {
-    
-    // Start is called before the first frame update
-    void OnTriggerEnter(Collider collider)
+    public class Keyitem : MonoBehaviour
     {
-        if (collider.CompareTag("Player"))
+    
+        // Start is called before the first frame update
+        void OnTriggerEnter(Collider collider)
         {
-            GameVariables.keyCount++;
+            if (collider.CompareTag("Player"))
+            {
+                GameVariables.keyCount++;
             
-            Destroy(gameObject);
+                Destroy(gameObject);
             
+            }
         }
     }
 }
