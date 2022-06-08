@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using System.IO;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class PlayerManager : MonoBehaviour
@@ -29,10 +30,11 @@ public class PlayerManager : MonoBehaviour
     {
         int randX = Random.Range(70, 263);
         int randZ = Random.Range(-222, -33);
-        instanciatedGameObject = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerController"), 
+        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerController"), 
                                                         new Vector3(randX, 4.7f, randZ), Quaternion.identity);
         //Faudrait penser à changer les coordonnées Y pour l'instanciation.
-        Launcher.Instance.PlayersObject.Add(PV.Owner.ActorNumber, instanciatedGameObject);
+        Debug.Log(SceneManager.GetActiveScene().name);
+        //Launcher.Instance.PlayersObject.Add(PV.Owner.ActorNumber, instanciatedGameObject);
         //PV.Owner.TagObject = instanciatedGameObject;
     }
 

@@ -41,8 +41,24 @@ public class PauseMenu : MonoBehaviour
 
     public void LoadMenu()
     {
+        pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
+        if (PhotonNetwork.OfflineMode)
+        {
+            PhotonNetwork.Destroy(GameObject.Find("PlayerManager(Clone)"));
+            PhotonNetwork.LoadLevel(0);
+            SceneManager.sceneLoaded += SceneManagerOnsceneLoaded;
+            return;
+        }
         //SceneManager.LoadScene(0);
         Launcher.Instance.QuitGame();
+    }
+
+    private void SceneManagerOnsceneLoaded(Scene arg0, LoadSceneMode arg1)
+    {
+        if (arg0.buildIndex == 0)
+        {
+            
+        }
     }
 }
