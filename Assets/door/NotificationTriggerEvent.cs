@@ -6,6 +6,7 @@ namespace door
 {
     public class NotificationTriggerEvent : MonoBehaviour
     {
+        [SerializeField] private AudioClip clip;
         [SerializeField] private Text notificationTextUI;
         [SerializeField] private Image itemIconUI;
         [SerializeField] private Sprite yourIcon;
@@ -14,7 +15,7 @@ namespace door
         [SerializeField] private bool removeAfterExit = false;
         [SerializeField] private bool disableAfterTime = false;
         [SerializeField]  float DisableTime = 1.0f;
-        private BoxCollider objectCollider;
+        private BoxCollider objectCollider;     
 
         private void Awake()
         {
@@ -26,7 +27,7 @@ namespace door
         
             if (other.CompareTag("Player"))
             {
-            
+                AudioSource.PlayClipAtPoint(clip, other.transform.position, 2f);
                 StartCoroutine(EnableNotification());
             }
         }
