@@ -1,20 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenu : MonoBehaviour
+public class MainMenu : MonoBehaviourPunCallbacks
 {
     public void PlayGame()
     {
-        //PhotonNetwork.OfflineMode = true;
-        PhotonNetwork.LoadLevel(2);
+        if (PhotonNetwork.OfflineMode)
+            PhotonNetwork.OfflineMode = false;
+        PhotonNetwork.OfflineMode = true;
     }
+
+    public override void OnConnectedToMaster()
+    {
+        Debug.Log("AAAAAAAAAAAAAA");
+        base.OnConnectedToMaster();
+        PhotonNetwork.AutomaticallySyncScene = true;
+        PhotonNetwork.CreateRoom(null);
+        PhotonNetwork.LoadLevel(2);
+        SceneManager.sceneLoaded += SceneManagerOnsceneLoaded;
+    }
+
+    private void SceneManagerOnsceneLoaded(Scene arg0, LoadSceneMode arg1)
+    {
+        if (arg0.buildIndex == 2 && GameObject.FindGameObjectsWithTag("Player").Length < 1 && PhotonNetwork.OfflineMode)
+        {
+            Debug.Log("Coucou");
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
+        }
+    }
+
 
     public void GoToMultiplayer()
     {
-        //PhotonNetwork.OfflineMode = false;
+        PhotonNetwork.OfflineMode = false;
         SceneManager.LoadScene(1);
     }
 

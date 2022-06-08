@@ -58,6 +58,8 @@ public class ThirdPersonMovement : MonoBehaviour
     
     void Update()
     {
+        Debug.Log(PhotonNetwork.OfflineMode);
+        
         if (!PV.IsMine)
             return;
         
