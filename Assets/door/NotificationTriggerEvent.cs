@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class NotificationTriggerEvent : MonoBehaviour
 {
     [SerializeField] private GameObject Player;
-    [SerializeField] private GameObject TeleportTo;
+    [SerializeField] private Transform TeleportTo;
     [SerializeField] private Text notificationTextUI;
     [SerializeField] private Image itemIconUI;
     [SerializeField] private Sprite yourIcon;
@@ -26,9 +26,11 @@ public class NotificationTriggerEvent : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Player.transform.position = TeleportTo.transform.position;  
         if (other.CompareTag("Player"))
         {
-            other.transform.position = TeleportTo.transform.position;
+            
+            Debug.Log("take key");
             StartCoroutine(EnableNotification());
         }
     }
