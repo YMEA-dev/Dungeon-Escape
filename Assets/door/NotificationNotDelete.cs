@@ -6,7 +6,7 @@ namespace door
 {
     public class NotificationNotDelete : MonoBehaviour
     {
-        [SerializeField] private AudioClip clip;
+        [SerializeField] private AudioSource audioObject;
         [SerializeField] private Text notificationTextUI;
         [SerializeField] private Image itemIconUI;
         [SerializeField] private Sprite yourIcon;
@@ -16,6 +16,10 @@ namespace door
         [SerializeField] private bool disableAfterTime = false;
         [SerializeField]  float DisableTime = 1.0f;
         private BoxCollider objectCollider;
+        private void Start()
+                            {
+                                audioObject.Stop();
+                            } 
 
         private void Awake()
         {
@@ -26,7 +30,7 @@ namespace door
         {
             if (other.CompareTag("Player"))
             {
-                AudioSource.PlayClipAtPoint(clip, other.transform.position, 2f);
+                audioObject.Play();
                 StartCoroutine(EnableNotification());
             }
         }

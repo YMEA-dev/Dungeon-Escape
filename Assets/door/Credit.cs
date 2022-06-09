@@ -11,17 +11,14 @@ public class Credit : MonoBehaviour
  
     void Start ()
     {
-        gameOver.SetActive(false); 
-        Debug.Log("set not active");    
+        gameOver.SetActive(false);   
         script = player.GetComponent<ThirdPersonMovement>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("not if ");
         if (other.CompareTag("Player"))
         {
-            Debug.Log("if ");
             script.enabled = false;
             gameOver.SetActive(true);
         }
