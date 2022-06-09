@@ -11,7 +11,6 @@ public class PlayerManager : MonoBehaviour
 {
 
     PhotonView PV;
-    public GameObject instanciatedGameObject;
 
     void Awake()
     {

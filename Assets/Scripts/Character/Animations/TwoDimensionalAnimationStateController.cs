@@ -41,6 +41,11 @@ public class TwoDimensionalAnimationStateController : MonoBehaviour
 		bool rightPressed = Input.GetKey(KeyCode.D);
 		bool runPressed = Input.GetKey(KeyCode.LeftShift);
 
+		if (runPressed)
+			GetComponent<ThirdPersonMovement>().isSprinting = true;
+		else
+			GetComponent<ThirdPersonMovement>().isSprinting = false;
+
 		//set current maximum velocity 
 		float currentMaxVelocity = runPressed ? maximumRunVelocity : maximumWalkVelocity;
 

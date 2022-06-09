@@ -16,7 +16,7 @@ public class OnWeaponCollision : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("COLLISION");
+        Debug.Log("COLLISION " + collision.gameObject.name);
         string colliderLayer = LayerMask.LayerToName(collision.gameObject.layer);
 
         if (colliderLayer == "Player")

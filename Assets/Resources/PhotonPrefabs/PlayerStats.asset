@@ -16,5 +16,5 @@ MonoBehaviour:
   Attack: 25
   Speed: 20
   JumpHeight: 7
-  SprintCoeff: 1.5
+  SprintCoeff: 2
   CrouchCoeff: 0.5
