@@ -4,12 +4,16 @@ namespace door
 {
     public class KeyGate : MonoBehaviour
     {
-        [SerializeField] private AudioClip clip;
+        [SerializeField] private AudioSource audioObject;
+        private void Start()
+                            {
+                                audioObject.Stop();
+                            } 
         private void OnTriggerEnter(Collider collider)
         {
             if (collider.CompareTag("Player") && GameVariables.keyCount > 1)
             {
-                AudioSource.PlayClipAtPoint(clip, collider.transform.position, 2f);
+                audioObject.Play();
                 GameVariables.keyCount = 0;
                 Destroy(gameObject);
             }

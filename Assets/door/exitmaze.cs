@@ -5,12 +5,8 @@ using UnityEngine;
 
 public class exitmaze : MonoBehaviour
 {
- 
     
     [SerializeField] private AudioSource audioObject;
-
-    
-
     private void OnTriggerEnter(Collider collider)
     {
         if (collider.CompareTag("Player"))
