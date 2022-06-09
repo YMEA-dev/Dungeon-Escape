@@ -10,7 +10,7 @@ public class OnEnemyCollision : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         string colliderLayer = LayerMask.LayerToName(collision.gameObject.layer);
-        
+        Debug.LogWarning("aaaaaaaaaaaaaaa");
         if (colliderLayer == "Player")
         {
             GameObject playerObject = collision.gameObject;

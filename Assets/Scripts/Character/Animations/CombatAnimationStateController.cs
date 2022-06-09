@@ -13,7 +13,7 @@ public class CombatAnimationStateController : MonoBehaviour
     private Animator animator;
     //private AnimationClip clip;
 
-    private int slashState = 0, nbSlash = 3;
+    private int slashState = 0, nbSlash = 2;
 
     private const float COOLDOWNCONSTANT = 0.5f;
     private float coolDown;
