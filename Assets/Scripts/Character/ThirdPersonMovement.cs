@@ -8,7 +8,8 @@ using Random = UnityEngine.Random;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
-    //public static ThirdPersonMovement Instance;   
+    //public static ThirdPersonMovement Instance;
+    
     public CharacterController controller;
     public Transform cam;
     public Transform groundCheck;
@@ -29,6 +30,7 @@ public class ThirdPersonMovement : MonoBehaviour
     private PhotonView PV;
     public CharacterStats myStats;
     [HideInInspector] public float health;
+    [HideInInspector] public bool isSprinting;
 
     private void Awake()
     {
@@ -57,14 +59,18 @@ public class ThirdPersonMovement : MonoBehaviour
     
     void Update()
     {
-        if (!PV.IsMine)
+        //Debug.Log(PhotonNetwork.OfflineMode);
+
+        if (!PV.IsMine || PauseMenu.GameIsPaused)
+        {
             return;
+        }
         
         //Debug.Log("Health: " + health);
 
         Jump();
         Move();
-                
+
         if (health <= 0)
             myStats.Die(gameObject);
     }
@@ -87,7 +93,8 @@ public class ThirdPersonMovement : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            controller.Move(moveDir.normalized * myStats.Speed * Time.deltaTime);
+            controller.Move(moveDir.normalized * myStats.Speed * Time.deltaTime *
+                            (isSprinting ? myStats.SprintCoeff : 1));
         }
     }
 
@@ -118,10 +125,5 @@ public class ThirdPersonMovement : MonoBehaviour
     public void EnableJumpTrigger()
     {
         jumpTrigger = true;
-    }
-
-    public void TeleportTo(Vector3 tpPoint)
-    {
-        transform.position = tpPoint;
     }
 }
